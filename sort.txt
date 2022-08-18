@@ -1,0 +1,136 @@
+public int count()
+        {
+            int count = 0;
+            if(head != null)
+            {
+                Item<T> temp = head;
+                while (temp != null)
+                {
+                    count++;
+                    temp = temp.Next;
+                }
+
+            }
+            
+            return count;
+
+        }
+        public Item<T> this[int index]
+        {
+            get {
+                Item<T> temp = head;
+                while (index > 0)
+                {
+                    temp = temp.Next;
+                    index--;
+                }
+                return temp;
+            }
+        }
+        public bool IsReadOnly => throw new NotImplementedException();
+
+        public void Add(T data)
+        {
+            AddLast(data);
+
+        }
+        
+        public MyLinkedList<T> Sort(MyLinkedList<T> list)
+        {
+            if (list.count() <= 1) return list;
+            MyLinkedList<T> levo = new MyLinkedList<T>();
+            MyLinkedList<T> pravo = new MyLinkedList<T>();
+            
+
+            int sered = (list.count() / 2);
+            for(int i = 0; i<sered; i++)
+            {
+                levo.AddLast(list[i].Data);
+            }
+            for (int i = sered; i <list.count(); i++)
+            {
+                pravo.AddLast(list[i].Data);
+            }
+
+            levo = Sort(levo);
+            pravo = Sort(pravo);
+
+            MyLinkedList<T> rez = Merge(levo, pravo);
+            return rez;
+        }
+
+        public MyLinkedList<T> Merge(MyLinkedList<T> levo, MyLinkedList<T> pravo)
+        {
+
+            MyLinkedList<T> rez = new MyLinkedList<T>();
+            while (levo.count() > 0 && pravo.count() > 0)
+            {
+                if (levo.head.Data.CompareTo(pravo.head.Data) < 0)//у нас было больше 0
+                {
+                    rez.AddLast(levo.head.Data);
+                    levo.RemoveFirst();
+                }
+                else
+                {
+                    rez.AddLast(pravo.head.Data);
+                    pravo.RemoveFirst();
+                }
+            }
+
+            if (levo.count() > 0)
+                rez.AddAll(levo);
+            if (pravo.count() > 0)
+                rez.AddAll(pravo);
+
+            return rez;
+        }
+
+        public void AddLast(Item<T> node)
+        {
+                node.prev = null;
+                node.Next = null;
+                if (head == null)
+                {
+                    head = node;
+                    last = head;
+                }
+                else
+                {
+                    last.Next = node;
+                    node.prev = last;
+                    last = node;
+                }
+        }
+        public void AddLast(T data)
+        {
+            Item<T> item = new Item<T>(data);
+            AddLast(item);
+        }
+        private void AddAll(MyLinkedList<T> list)
+        {
+            var current = list.head;
+            while (current != null)
+            {
+                this.AddLast(current);
+                current = current.Next;
+            }
+        }
+       public void RemoveFirst()
+        {
+            if (head == null)
+            {
+                return;
+            }
+            if (head.Next == null)
+            {
+                head = null;
+                last = null;
+            }
+            if (head != null)
+            {
+                head = head.Next;
+                head.prev = null;
+            }
+
+
+        }
