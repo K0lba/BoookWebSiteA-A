@@ -1,4 +1,4 @@
-public int count()
+public int count()22222221wwsddfagdafSFADGSDGFADGSGADGSGASFDGSBGDSBFccccccccccccchhhhhhhhhhhhhheeeeeeeeeeeeelllllll
         {
             int count = 0;
             if(head != null)
